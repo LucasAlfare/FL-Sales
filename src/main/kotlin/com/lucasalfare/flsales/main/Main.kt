@@ -104,7 +104,7 @@ suspend fun main() {
     }
   }
 
-  embeddedServer(Netty, port = 22) {
+  embeddedServer(Netty, port = 80) {
     configureCORS()
     configureSerialization()
     configureRouting()
