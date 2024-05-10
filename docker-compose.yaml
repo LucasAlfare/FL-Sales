@@ -1,6 +1,6 @@
 services:
   minha-api:
-    container_name: fl-refs-container
+    container_name: fl-sales-container
     build: .
     # variables values obtained from local/private .env file
     environment:
