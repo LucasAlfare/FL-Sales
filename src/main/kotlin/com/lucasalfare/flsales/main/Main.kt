@@ -138,6 +138,8 @@ fun Application.configureCORS() {
   install(CORS) {
     anyHost()
     allowHeader(HttpHeaders.ContentType)
+    allowMethod(HttpMethod.Get)
+    allowMethod(HttpMethod.Post)
   }
 }
 
@@ -157,6 +159,10 @@ fun Application.configureRouting() {
     staticFiles("/get_report", File("files")) {
       default("get_report.html")
       preCompressed(CompressedFileType.GZIP)
+    }
+
+    get("/hello") {
+      call.respondText("Hello from KTOR API! :)")
     }
 
     get("/reports/{date}") {
