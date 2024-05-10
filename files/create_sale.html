@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requisição POST</title>
+</head>
+
+<body>
+
+  <form id="saleForm">
+    <label for="date">Data:</label><br>
+    <input type="text" id="date" name="date" placeholder="mm-dd-yyyy"><br>
+
+    <label for="paymentMethod">Método de pagamento:</label><br>
+    <select id="paymentMethod" name="paymentMethod">
+      <option value="Cash">Dinheiro</option>
+      <option value="Pix">Pix</option>
+      <option value="Debit">Débito</option>
+    </select><br>
+
+    <label for="quantity">Quantidade:</label><br>
+    <input type="number" id="quantity" name="quantity" value="1"><br>
+
+    <label for="relatedProductName">Nome do produto relacionado:</label><br>
+    <select id="relatedProductName" name="relatedProductName">
+      <option value="product 1">Produto 1</option>
+      <option value="product 2">Produto 2</option>
+    </select><br><br>
+
+    <button type="button" onclick="sendData()">Enviar</button>
+  </form>
+
+  <script>
+    function sendData() {
+      const form = document.getElementById("saleForm");
+      const formData = new FormData(form);
+
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      };
+
+      fetch('http://localhost:80/sales', requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao enviar requisição');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Requisição enviada com sucesso:', data);
+          // Aqui você pode adicionar qualquer ação adicional após o envio bem-sucedido da requisição
+        })
+        .catch(error => {
+          console.error('Erro ao enviar requisição:', error);
+        });
+    }
+  </script>
+
+</body>
+
+</html>

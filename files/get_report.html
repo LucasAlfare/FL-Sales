@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Vendas</title>
+</head>
+
+<body>
+
+<h1>Relatório de Vendas</h1>
+
+<form id="reportForm">
+    <label for="date">Data:</label><br>
+    <input type="text" id="date" name="date" placeholder="mm-dd-yyyy"><br><br>
+
+    <button type="button" onclick="getReport()">Obter Relatório</button>
+</form>
+
+<div id="reportResult"></div>
+
+<script>
+    function getReport() {
+      const date = document.getElementById("date").value;
+
+      fetch(`http://localhost:80/reports/${date}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao obter relatório');
+          }
+          return response.json();
+        })
+        .then(data => {
+          displayReport(data);
+        })
+        .catch(error => {
+          console.error('Erro ao obter relatório:', error);
+        });
+    }
+
+    function displayReport(reportData) {
+      const reportDiv = document.getElementById("reportResult");
+      reportDiv.innerHTML = ''; // Limpa o conteúdo anterior
+
+      const reportTable = document.createElement("table");
+      reportTable.border = "1";
+      reportTable.style.borderCollapse = "collapse";
+
+      // Cabeçalho da tabela
+      const headerRow = reportTable.insertRow();
+      const headers = ["Data", "Total Cash", "Total Pix", "Total Debit", "Total", "Total Cost", "Profit"];
+      headers.forEach(header => {
+        const cell = headerRow.insertCell();
+        cell.textContent = header;
+      });
+
+      // Linha de dados
+      const dataRow = reportTable.insertRow();
+      const cells = [
+        reportData.date,
+        reportData.totalCash === 0 ? "- -" : reportData.totalCash,
+        reportData.totalPix === 0 ? "- -" : reportData.totalPix,
+        reportData.totalDebit === 0 ? "- -" : reportData.totalDebit,
+        reportData.total === 0 ? "- -" : reportData.total,
+        reportData.totalCost === 0 ? "- -" : reportData.totalCost,
+        reportData.profit === 0 ? "- -" : reportData.profit
+      ];
+      cells.forEach(cellData => {
+        const cell = dataRow.insertCell();
+        cell.textContent = cellData;
+      });
+
+      reportDiv.appendChild(reportTable);
+
+      // Adiciona as frequências à tabela
+      const frequenciesTable = document.createElement("table");
+      frequenciesTable.border = "1";
+      frequenciesTable.style.borderCollapse = "collapse";
+
+      const frequenciesHeaderRow = frequenciesTable.insertRow();
+      const frequenciesHeaderCell = frequenciesHeaderRow.insertCell();
+      frequenciesHeaderCell.textContent = "Frequências";
+
+      Object.entries(reportData.frequencies).forEach(([key, value]) => {
+        const frequencyRow = frequenciesTable.insertRow();
+        const frequencyKeyCell = frequencyRow.insertCell();
+        frequencyKeyCell.textContent = key;
+        const frequencyValueCell = frequencyRow.insertCell();
+        frequencyValueCell.textContent = value === 0 ? "- -" : value;
+      });
+
+      reportDiv.appendChild(frequenciesTable);
+    }
+</script>
+
+</body>
+
+</html>
