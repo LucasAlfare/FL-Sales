@@ -151,12 +151,12 @@ fun Application.configureSerialization() {
 
 fun Application.configureRouting() {
   routing {
-    staticFiles("/create_sale", File("files")) {
+    staticFiles("/create_sale", File("/files")) {
       default("create_sale.html")
       preCompressed(CompressedFileType.GZIP)
     }
 
-    staticFiles("/get_report", File("files")) {
+    staticFiles("/get_report", File("/files")) {
       default("get_report.html")
       preCompressed(CompressedFileType.GZIP)
     }
