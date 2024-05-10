@@ -1,3 +1,5 @@
+package com.lucasalfare.flsales.main
+
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import com.zaxxer.hikari.util.IsolationLevel

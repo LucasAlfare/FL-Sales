@@ -1,3 +1,5 @@
+package com.lucasalfare.flsales.main
+
 class Constants {
   companion object {
     @Deprecated("Postgres URL are now handled by Environment variables.")

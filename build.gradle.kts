@@ -83,7 +83,7 @@ kotlin {
 
 application {
   // Define the main class for the application.
-  mainClass.set("com.lucasalfare.flrefs.main.MainKt")
+  mainClass.set("com.lucasalfare.flsales.main.MainKt")
 }
 
 /*
@@ -95,7 +95,7 @@ Also, this is needed because we need to specify that info when creating a jar.
 tasks.withType<Jar> {
   manifest {
     // "Main-Class" is set to the actual main file path
-    attributes["Main-Class"] = "com.lucasalfare.flrefs.main.MainKt"
+    attributes["Main-Class"] = "com.lucasalfare.flsales.main.MainKt"
   }
 
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
