@@ -87,27 +87,27 @@ object Sales : IntIdTable("Sales") {
 suspend fun main() {
   initDatabase(true)
 
-//  runCatching {
-//    AppDB.query {
-//      Products.insert {
-//        it[name] = "product 1"
-//        it[price] = 20 * ONE_REAL
-//        it[productionCost] = 15 * ONE_REAL
-//      }
-//
-//      Products.insert {
-//        it[name] = "product 2"
-//        it[price] = 30 * ONE_REAL
-//        it[productionCost] = 10 * ONE_REAL
-//      }
-//    }
-//  }
-//
-//  embeddedServer(Netty, port = 80) {
-//    configureCORS()
-//    configureSerialization()
-//    configureRouting()
-//  }.start(true)
+  runCatching {
+    AppDB.query {
+      Products.insert {
+        it[name] = "product 1"
+        it[price] = 20 * ONE_REAL
+        it[productionCost] = 15 * ONE_REAL
+      }
+
+      Products.insert {
+        it[name] = "product 2"
+        it[price] = 30 * ONE_REAL
+        it[productionCost] = 10 * ONE_REAL
+      }
+    }
+  }
+
+  embeddedServer(Netty, port = 80) {
+    configureCORS()
+    configureSerialization()
+    configureRouting()
+  }.start(true)
 }
 
 fun initDatabase(dropTablesOnStart: Boolean = false) {
