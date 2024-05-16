@@ -85,7 +85,7 @@ object Sales : IntIdTable("Sales") {
 }
 
 suspend fun main() {
-  initDatabase(true)
+  initDatabase()
 
   runCatching {
     AppDB.query {
