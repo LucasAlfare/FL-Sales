@@ -19,7 +19,6 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.io.File
 
 const val ONE_CENT = 1
 const val ONE_REAL = 100 * ONE_CENT
@@ -86,29 +85,29 @@ object Sales : IntIdTable("Sales") {
 }
 
 suspend fun main() {
-  initDatabase()
+  initDatabase(true)
 
-  runCatching {
-    AppDB.query {
-      Products.insert {
-        it[name] = "product 1"
-        it[price] = 20 * ONE_REAL
-        it[productionCost] = 15 * ONE_REAL
-      }
-
-      Products.insert {
-        it[name] = "product 2"
-        it[price] = 30 * ONE_REAL
-        it[productionCost] = 10 * ONE_REAL
-      }
-    }
-  }
-
-  embeddedServer(Netty, port = 80) {
-    configureCORS()
-    configureSerialization()
-    configureRouting()
-  }.start(true)
+//  runCatching {
+//    AppDB.query {
+//      Products.insert {
+//        it[name] = "product 1"
+//        it[price] = 20 * ONE_REAL
+//        it[productionCost] = 15 * ONE_REAL
+//      }
+//
+//      Products.insert {
+//        it[name] = "product 2"
+//        it[price] = 30 * ONE_REAL
+//        it[productionCost] = 10 * ONE_REAL
+//      }
+//    }
+//  }
+//
+//  embeddedServer(Netty, port = 80) {
+//    configureCORS()
+//    configureSerialization()
+//    configureRouting()
+//  }.start(true)
 }
 
 fun initDatabase(dropTablesOnStart: Boolean = false) {
@@ -151,15 +150,17 @@ fun Application.configureSerialization() {
 
 fun Application.configureRouting() {
   routing {
-    staticFiles("/create_sale", File("files")) {
-      default("create_sale.html")
-      preCompressed(CompressedFileType.GZIP)
-    }
+    staticResources(
+      remotePath = "/create_sale",
+      basePackage = "assets",
+      index = "pages/create_sale.html"
+    )
 
-    staticFiles("/get_report", File("files")) {
-      default("get_report.html")
-      preCompressed(CompressedFileType.GZIP)
-    }
+    staticResources(
+      remotePath = "/get_report",
+      basePackage = "assets",
+      index = "pages/get_report.html"
+    )
 
     get("/hello") {
       call.respondText("Hello from KTOR API! :)")
